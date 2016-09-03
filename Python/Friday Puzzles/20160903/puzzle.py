@@ -1,5 +1,3 @@
-import unittest
-
 # Main function:
 class ByteConverter:
   def __init__(self):
@@ -7,18 +5,27 @@ class ByteConverter:
     self.prefixes=['','Ki','Mi','Gi','Ti','Pi','Ei']
 
   def toHumanReadable(self,numberOfBytes):
+    # error checking:
+    try:
+       a = int(numberOfBytes)
+    except ValueError:
+       raise ValueError('Input must be a number')
+
     if numberOfBytes <= 0:
-      raise ValueError('Input must be > 0')
+      raise ValueError('Input must be greater than 0')
 
     if numberOfBytes > 2**63-1:
-      raise ValueError('Input must be < 2^63')
+      raise ValueError('Input must be no larger than 2^63-1')
 
+    # the actual conversion:
     for prefix in self.prefixes:
       if numberOfBytes < self.oneKiB:
         return '%i %sB' % (numberOfBytes,prefix)
       numberOfBytes /= self.oneKiB
 
 # Unit Tests Below:
+import unittest
+
 class Test_ByteConverter(unittest.TestCase):
   def setUp(self):
     self.byteConverter = ByteConverter()
@@ -37,6 +44,8 @@ class Test_ByteConverter(unittest.TestCase):
     self.assertRaises(ValueError,self.byteConverter.toHumanReadable,-5)
   def test_attic(self):
     self.assertRaises(ValueError,self.byteConverter.toHumanReadable,2**63)
+  def test_nan(self):
+    self.assertRaises(ValueError,self.byteConverter.toHumanReadable,'I am not a number.')
 
 if __name__ == '__main__':
     unittest.main()
