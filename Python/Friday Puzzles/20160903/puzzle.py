@@ -3,7 +3,7 @@ import unittest
 class ByteConverter:
   def __init__(self):
     self.oneKiB=2**10
-    self.prefixes=['', 'Ki', 'Mi', 'Gi', 'Ti', 'Pi', 'Ei']
+    self.prefixes=['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB']
 
   def toHumanReadable(self, numberOfBytes):
     # error checking:
@@ -21,7 +21,7 @@ class ByteConverter:
     # the actual conversion:
     for prefix in self.prefixes:
       if numberOfBytes < self.oneKiB:
-        return '%i %sB' % (numberOfBytes, prefix)
+        return '%i %s' % (numberOfBytes, prefix)
       numberOfBytes /= self.oneKiB
 
 
